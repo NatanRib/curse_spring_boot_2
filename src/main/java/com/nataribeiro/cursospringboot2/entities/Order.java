@@ -1,5 +1,6 @@
 package com.nataribeiro.cursospringboot2.entities;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 import javax.persistence.Entity;
@@ -10,10 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.nataribeiro.cursospringboot2.entities.enums.OrderStatus;
+
 @Entity
 @Table(name = "tb_orders")
-public class Order {
-
+public class Order implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -23,12 +27,15 @@ public class Order {
 	@JoinColumn(name = "client_id")
 	private User client;
 	
+	private Integer orderStatus;
+	
 	public Order() {}
 	
-	public Order(Long id, Instant moment, User client) {
+	public Order(Long id, Instant moment, User client, OrderStatus orderStatus) {
 		this.id = id;
 		this.moment = moment;
 		this.client = client;
+		this.orderStatus = orderStatus.getCode();
 	}
 
 	public Long getId() {
@@ -53,6 +60,14 @@ public class Order {
 
 	public void setClient(User client) {
 		this.client = client;
+	}
+	
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus);
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus.getCode();
 	}
 
 	@Override
