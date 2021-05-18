@@ -24,6 +24,12 @@ public class Order {
 	private User client;
 	
 	public Order() {}
+	
+	public Order(Long id, Instant moment, User client) {
+		this.id = id;
+		this.moment = moment;
+		this.client = client;
+	}
 
 	public Long getId() {
 		return id;
