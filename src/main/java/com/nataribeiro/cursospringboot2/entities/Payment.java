@@ -2,54 +2,41 @@ package com.nataribeiro.cursospringboot2.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.nataribeiro.cursospringboot2.entities.enums.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "tb_orders")
-public class Order implements Serializable{
+@Table(name = "tb_payments")
+public class Payment implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
 	
-	@ManyToOne
-	@JoinColumn(name = "client_id")
-	private User client;
-	
-	private Integer orderStatus;
-	
-	@OneToMany(mappedBy = "id.order")
-	private Set<OrderItem> items = new HashSet<OrderItem>();
-	
-	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-	private Payment payment;
-	
-	public Order() {}
-	
-	public Order(Long id, Instant moment, User client, OrderStatus orderStatus) {
+	@JsonIgnore
+	@OneToOne
+	@MapsId
+	private Order order;
+
+	public Payment() {}
+
+	public Payment(Long id, Instant moment, Order order) {
+		super();
 		this.id = id;
 		this.moment = moment;
-		this.client = client;
-		this.orderStatus = orderStatus.getCode();
+		this.order = order;
 	}
 
 	public Long getId() {
@@ -68,32 +55,12 @@ public class Order implements Serializable{
 		this.moment = moment;
 	}
 
-	public User getClient() {
-		return client;
+	public Order getOrder() {
+		return order;
 	}
 
-	public void setClient(User client) {
-		this.client = client;
-	}
-	
-	public OrderStatus getOrderStatus() {
-		return OrderStatus.valueOf(orderStatus);
-	}
-
-	public void setOrderStatus(OrderStatus orderStatus) {
-		this.orderStatus = orderStatus.getCode();
-	}
-	
-	public Set<OrderItem> getOrderitems(){
-		return items;
-	}
-	
-	public Payment getPayment() {
-		return payment;
-	}
-
-	public void setPayment(Payment payment) {
-		this.payment = payment;
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
 	@Override
@@ -112,7 +79,7 @@ public class Order implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Order other = (Order) obj;
+		Payment other = (Payment) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

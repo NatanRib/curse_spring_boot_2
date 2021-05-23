@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import com.nataribeiro.cursospringboot2.entities.Category;
 import com.nataribeiro.cursospringboot2.entities.Order;
 import com.nataribeiro.cursospringboot2.entities.OrderItem;
+import com.nataribeiro.cursospringboot2.entities.Payment;
 import com.nataribeiro.cursospringboot2.entities.Product;
 import com.nataribeiro.cursospringboot2.entities.User;
 import com.nataribeiro.cursospringboot2.entities.enums.OrderStatus;
@@ -88,5 +89,11 @@ public class TestConfig implements CommandLineRunner{
 		OrderItem oi9 = new OrderItem(o8, p4, 2, p4.getPrice());
 		
 		orderItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3,oi4,oi5,oi6,oi7,oi8,oi9));
+		
+		Payment pay1 = new Payment(null, Instant.parse("2021-05-18T19:12:54Z"), o1);
+		
+		o1.setPayment(pay1);
+		
+		orderRepository.save(o1);
 	}
 }
