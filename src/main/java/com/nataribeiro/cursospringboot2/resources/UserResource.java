@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,7 @@ public class UserResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	@GetMapping(path = "/{id}")
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<User> findById(@PathVariable Long id){
 		User user = service.findById(id);
 		return ResponseEntity.ok().body(user);
@@ -42,4 +43,11 @@ public class UserResource {
 				.buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
 	}
+	
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Long id){
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+	}
 }
+		
