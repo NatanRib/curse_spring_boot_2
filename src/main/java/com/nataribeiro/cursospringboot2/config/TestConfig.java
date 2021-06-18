@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.nataribeiro.cursospringboot2.entities.Category;
 import com.nataribeiro.cursospringboot2.entities.Order;
@@ -35,6 +36,8 @@ public class TestConfig implements CommandLineRunner{
 	private ProductRepository productRepository;
 	@Autowired
 	private OrderItemRepository orderItemRepository;
+	@Autowired
+	private PasswordEncoder encoder;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -61,10 +64,11 @@ public class TestConfig implements CommandLineRunner{
 		
 		productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
 		
-		User u1 = new User(null, "Natan Ribeiro", "natan@gmail.com", "999999999", "123456");
-		User u2 = new User(null, "Renan Ribeiro", "renan@gmail.com", "999999991", "123457");
-		User u3 = new User(null, "Yuri Anatalia", "yuri@gmail.com", "999999992", "123458");
-		User u4 = new User(null, "Karine Marques", "karine@gmail.com", "999999993", "123459");
+		
+		User u1 = new User(null, "natanrib", "Natan Ribeiro", "natan@gmail.com", "999999999", encoder.encode("123456"));
+		User u2 = new User(null, "renanrib", "Renan Ribeiro", "renan@gmail.com", "999999991", encoder.encode("123457"));
+		User u3 = new User(null, "yuri", "Yuri Anatalia", "yuri@gmail.com", "999999992", encoder.encode("123458"));
+		User u4 = new User(null, "karine", "Karine Marques", "karine@gmail.com", "999999993", encoder.encode("123459"));
 		
 		Order o1 = new Order(null, Instant.parse("2021-05-18T15:12:54Z"), u4, OrderStatus.PAID);
 		Order o2 = new Order(null, Instant.parse("2020-06-15T08:11:44Z"), u1, OrderStatus.WAITING_PAYMENT);

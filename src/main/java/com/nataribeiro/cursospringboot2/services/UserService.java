@@ -8,6 +8,10 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.nataribeiro.cursospringboot2.entities.User;
@@ -16,7 +20,10 @@ import com.nataribeiro.cursospringboot2.services.exceptions.DataBaseException;
 import com.nataribeiro.cursospringboot2.services.exceptions.ResourceNotFoundException;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService{
+	
+	@Autowired
+	PasswordEncoder encoder;
 	
 	@Autowired
 	private UserRepository repository;
@@ -31,6 +38,7 @@ public class UserService {
 	}
 	
 	public User insert(User user) {
+		user.setPassword(encoder.encode(user.getPassword()));
 		return repository.save(user);
 	}
 	
@@ -58,5 +66,18 @@ public class UserService {
 		entity.setName(obj.getName());
 		entity.setEmail(obj.getEmail());
 		entity.setPhone(obj.getPhone());
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		System.out.println("chamou userservice");
+		User u = repository.findUserByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException(String.format("user with username '%s' not found!", username)));
+		
+		return org.springframework.security.core.userdetails.User.builder()
+				.username(u.getUsername())
+				.password(u.getPassword())
+				.roles("USER")
+				.build();
 	}
 }

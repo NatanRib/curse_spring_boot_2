@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -21,9 +23,16 @@ public class User implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotEmpty(message = "Field username cannot be null")
+	@Column(nullable = false)
+	private String username;
 	private String name;
 	private String email;
 	private String phone;
+	
+	@NotEmpty(message = "Field password cannot be empty")
+	@Column(nullable = false)
 	private String password;
 	
 	@JsonIgnore
@@ -32,9 +41,10 @@ public class User implements Serializable{
 	
 	public User(){}
 
-	public User(Long id, String name, String email, String phone, String password) {
+	public User(Long id, String username, String name, String email, String phone, String password) {
 		super();
 		this.id = id;
+		this.username = username;
 		this.name = name;
 		this.email = email;
 		this.phone = phone;
@@ -47,6 +57,14 @@ public class User implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getName() {
