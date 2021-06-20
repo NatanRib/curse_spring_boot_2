@@ -1,6 +1,5 @@
 package com.nataribeiro.cursospringboot2.entities;
 
-import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,8 +20,7 @@ import com.nataribeiro.cursospringboot2.entities.enums.OrderStatus;
 
 @Entity
 @Table(name = "tb_orders")
-public class Order implements Serializable{
-	private static final long serialVersionUID = 1L;
+public class Order {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +30,8 @@ public class Order implements Serializable{
 	private Instant moment;
 	
 	@ManyToOne
-	@JoinColumn(name = "client_id")
-	private User client;
+	@JoinColumn(name = "user_id")
+	private User user;
 	
 	private Integer orderStatus;
 	
@@ -45,10 +43,10 @@ public class Order implements Serializable{
 	
 	public Order() {}
 	
-	public Order(Long id, Instant moment, User client, OrderStatus orderStatus) {
+	public Order(Long id, Instant moment, User user, OrderStatus orderStatus) {
 		this.id = id;
 		this.moment = moment;
-		this.client = client;
+		this.user = user;
 		this.orderStatus = orderStatus.getCode();
 	}
 
@@ -68,12 +66,12 @@ public class Order implements Serializable{
 		this.moment = moment;
 	}
 
-	public User getClient() {
-		return client;
+	public User getUser() {
+		return user;
 	}
 
-	public void setClient(User client) {
-		this.client = client;
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	public OrderStatus getOrderStatus() {

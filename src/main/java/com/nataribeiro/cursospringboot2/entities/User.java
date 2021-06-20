@@ -1,6 +1,5 @@
 package com.nataribeiro.cursospringboot2.entities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_users")
-public class User implements Serializable{
-	private static final long serialVersionUID = 1L;
+public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +34,7 @@ public class User implements Serializable{
 	private String password;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "client")
+	@OneToMany(mappedBy = "user")
 	private List<Order> orders = new ArrayList<Order>();
 	
 	public User(){}

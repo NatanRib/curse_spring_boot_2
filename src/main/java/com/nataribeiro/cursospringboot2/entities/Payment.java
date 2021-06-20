@@ -1,6 +1,5 @@
 package com.nataribeiro.cursospringboot2.entities;
 
-import java.io.Serializable;
 import java.time.Instant;
 
 import javax.persistence.Entity;
@@ -16,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_payments")
-public class Payment implements Serializable{
-	private static final long serialVersionUID = 1L;
+public class Payment {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

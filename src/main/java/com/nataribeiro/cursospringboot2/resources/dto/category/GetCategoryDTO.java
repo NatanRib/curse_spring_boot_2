@@ -1,9 +1,12 @@
 package com.nataribeiro.cursospringboot2.resources.dto.category;
 
+import java.io.Serializable;
+
 import com.nataribeiro.cursospringboot2.entities.Category;
 
-public class GetCategoryDTO {
-
+public class GetCategoryDTO implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	private Long id;
 	private String name;
 	

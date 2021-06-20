@@ -1,7 +1,7 @@
 package com.nataribeiro.cursospringboot2.services.impl;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.nataribeiro.cursospringboot2.entities.User;
 import com.nataribeiro.cursospringboot2.repositories.UserRepository;
+import com.nataribeiro.cursospringboot2.resources.dto.user.GetUserDTO;
 import com.nataribeiro.cursospringboot2.services.exceptions.DataBaseException;
 import com.nataribeiro.cursospringboot2.services.exceptions.ResourceNotFoundException;
 
@@ -28,18 +29,21 @@ public class UserServiceImpl implements UserDetailsService{
 	@Autowired
 	private UserRepository repository;
 	
-	public List<User> FindAll(){
-		return repository.findAll();
+	public List<GetUserDTO> FindAll(){
+		return repository.findAll().stream()
+				.map(u -> GetUserDTO.fromUser(u))
+					.collect(Collectors.toList());
 	}
 	
-	public User findById(Long id){
-		Optional<User> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+	public GetUserDTO findById(Long id){
+		return repository.findById(id)
+				.map(u -> GetUserDTO.fromUser(u))
+					.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
-	public User insert(User user) {
+	public GetUserDTO insert(User user) {
 		user.setPassword(encoder.encode(user.getPassword()));
-		return repository.save(user);
+		return GetUserDTO.fromUser(repository.save(user));
 	}
 	
 	public void delete(Long id) {
@@ -52,20 +56,17 @@ public class UserServiceImpl implements UserDetailsService{
 		}
 	}
 	
-	public User update(Long id, User obj) {
+	public GetUserDTO update(Long id, User obj) {
 		try {			
 			User entity= repository.getOne(id);
-			updateData(entity, obj);
-			return repository.save(entity);
+			if (obj.getName() != null) entity.setName(obj.getName());
+			if (obj.getEmail() != null) entity.setEmail(obj.getEmail());
+			if (obj.getPhone() != null) entity.setPhone(obj.getPhone());
+			if (obj.getPassword() != null) entity.setPassword( encoder.encode(obj.getPassword()));
+			return GetUserDTO.fromUser(repository.save(entity));
 		}catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
-	}
-
-	private void updateData(User entity, User obj) {
-		entity.setName(obj.getName());
-		entity.setEmail(obj.getEmail());
-		entity.setPhone(obj.getPhone());
 	}
 
 	@Override

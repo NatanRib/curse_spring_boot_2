@@ -2,11 +2,11 @@ package com.nataribeiro.cursospringboot2.services;
 
 import java.util.List;
 
-import com.nataribeiro.cursospringboot2.entities.Product;
+import com.nataribeiro.cursospringboot2.resources.dto.product.GetProductDTO;
 
 public interface ProductService {
 	
-	public List<Product> findAll();
+	public List<GetProductDTO> findAll();
 	
-	public Product findById(Long id);
+	public GetProductDTO findById(Long id);
 }

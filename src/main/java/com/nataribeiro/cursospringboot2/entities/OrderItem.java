@@ -1,7 +1,5 @@
 package com.nataribeiro.cursospringboot2.entities;
 
-import java.io.Serializable;
-
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -11,8 +9,7 @@ import com.nataribeiro.cursospringboot2.entities.pk.OrderItemPK;
 
 @Entity
 @Table(name = "tb_order_item")
-public class OrderItem implements Serializable{
-	private static final long serialVersionUID = 1L;
+public class OrderItem {
 	
 	@EmbeddedId
 	private OrderItemPK id = new OrderItemPK();
