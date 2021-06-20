@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.nataribeiro.cursospringboot2.entities.User;
-import com.nataribeiro.cursospringboot2.services.UserService;
+import com.nataribeiro.cursospringboot2.services.impl.UserServiceImpl;
 
 @RestController
 @RequestMapping(value= "/users")
 public class UserResource {
 	
 	@Autowired
-	private UserService service;
+	private UserServiceImpl service;
 	
 	@GetMapping
 	public ResponseEntity<List<User>> findAll() {

@@ -1,4 +1,4 @@
-package com.nataribeiro.cursospringboot2.services;
+package com.nataribeiro.cursospringboot2.services.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +20,7 @@ import com.nataribeiro.cursospringboot2.services.exceptions.DataBaseException;
 import com.nataribeiro.cursospringboot2.services.exceptions.ResourceNotFoundException;
 
 @Service
-public class UserService implements UserDetailsService{
+public class UserServiceImpl implements UserDetailsService{
 	
 	@Autowired
 	PasswordEncoder encoder;
